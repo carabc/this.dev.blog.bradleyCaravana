@@ -19,7 +19,12 @@ app.use(express.static(path.join(__dirname, "/public")));
 // Passport config
 require("./config/passport")(passport);
 // Handlebars helpers
-const { formatDate, truncate } = require("./helpers/hbs");
+const {
+  formatDate,
+  truncate,
+  testIfImLoggedIn,
+  makeNewPostButton,
+} = require("./helpers/hbs");
 // Initialize handlebars view engine
 app.engine(
   ".hbs",
@@ -27,14 +32,14 @@ app.engine(
     extname: "hbs",
     defaultLayout: "index.hbs",
     partialsDir: [path.join(__dirname, "views/partials")],
-    helpers: { formatDate, truncate },
+    helpers: { formatDate, truncate, testIfImLoggedIn, makeNewPostButton },
   })
 );
 app.set("view engine", ".hbs");
 // Initialize express session middleware
 app.use(
   session({
-    secret: "keyboard cat",
+    secret: "ralphies butt",
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
@@ -48,6 +53,11 @@ app.use(morgan());
 // Initialize built in body parser for express
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+// Set global user var
+app.use(function (req, res, next) {
+  res.locals.user = req.user || null;
+  next();
+});
 // Routes
 app.use("/blog", require("./routes/blog"));
 app.use("/auth", require("./routes/auth"));

@@ -25,6 +25,27 @@ body {
   color: var(--purple);
 }
 
+.floating-btn {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: var(--purple);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 40px;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  transition: all 0.2s;
+}
+
+.floating-btn:hover {
+  background: var(--purpleClear);
+}
+
 .main-nav {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

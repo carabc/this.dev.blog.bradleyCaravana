@@ -15,4 +15,12 @@ module.exports = {
     }
     return str;
   },
+
+  testIfImLoggedIn: function (loggedInUser, myGoogleId) {
+    return loggedInUser._id === myGoogleId;
+  },
+
+  makeNewPostButton: function () {
+    return `<a href="blog/new" class="floating-btn"><i class="fas fa-plus"></i></a>`;
+  },
 };

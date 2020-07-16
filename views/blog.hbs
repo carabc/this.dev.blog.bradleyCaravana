@@ -4,6 +4,9 @@
 {{> hero}}
 
 {{!-- Posts --}}
+{{#if showPlus}}
+{{{makeNewPostButton}}}
+{{/if}}
 {{#if posts}}
 <section class="recent">
     <h1>Recent Posts...</h1>
@@ -28,12 +31,12 @@
                 </div>
             </div>
             <div class="blog-card__title">
-                <h3><a href='/blog/{{id}}' target="_blank">{{header}}</a></h3>
-                <h5>{{subHeaderOne}}</h5>
+                <h3><a href='/blog/{{_id}}' target="_blank">{{header}}</a></h3>
+                <h5>{{subHeader}}</h5>
             </div>
             <div class="blog-card__preview">
                 <p>
-                    {{truncate bodyTextOne 150}}
+                    {{truncate markdown 150}}
                 </p>
             </div>
             <div class="divider"></div>

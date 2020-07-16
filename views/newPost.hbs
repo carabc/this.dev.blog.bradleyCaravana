@@ -8,7 +8,7 @@
     <form action="/blog/new" method="POST">
         <div class="form-group">
             <label for="header">Header</label>
-            <input type="text" class="form-control" name="title">
+            <input type="text" class="form-control" name="header">
         </div>
         <div class="form-group">
             <label for="subHeader">Sub Header</label>
@@ -31,8 +31,8 @@
             <input class="form-control" type="file" accept="image/*" name="bodyPicTwo">
         </div>
         <div class="form-group">
-            <label for="bodyText">Body</label>
-            <textarea name="bodyText" class="form-control" cols="30" rows="10"></textarea>
+            <label for="markdown">Body</label>
+            <textarea name="markdown" class="form-control" cols="30" rows="10"></textarea>
         </div>
         <button class="btn-dark" type='submit'>Submit</button>
     </form>
