@@ -1,0 +1,57 @@
+{{!-- NAV PARTIAL --}}
+{{> nav}}
+{{!-- HERO PARTIAL --}}
+{{> hero}}
+
+{{!-- Posts --}}
+{{#if posts}}
+<section class="recent">
+    <h1>Recent Posts...</h1>
+    {{#each posts}}
+    <div class="blog-card">
+        <div class="blog-card__thumbnail">
+            <img src="../images/me.JPG" alt="" />
+        </div>
+        <div class="blog-card__info">
+            <div class="blog-card__info__header">
+                <div class="profile-picture">
+                    <img src="../images/me.JPG" alt="" />
+                </div>
+                <div class="name-date">
+                    <cite>{{author}}</cite>
+                    <cite>{{formatDate createdAt 'MMMM Do, YYYY'}}</cite>
+                </div>
+                <div class="options">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                </div>
+            </div>
+            <div class="blog-card__title">
+                <h3><a href='/blog/{{id}}' target="_blank">{{header}}</a></h3>
+                <h5>{{subHeaderOne}}</h5>
+            </div>
+            <div class="blog-card__preview">
+                <p>
+                    {{truncate bodyTextOne 150}}
+                </p>
+            </div>
+            <div class="divider"></div>
+            <div class="blog-card__footer">
+                <cite>Write a comment</cite>
+                <div class="heart">2 <3 </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+</section>
+{{else}}
+<section class="recent">
+    <h1>No Recent Posts...</h1>
+</section>
+{{/if}}
+{{!-- END Posts --}}
+<a href="/auth/google" class="btn-dark">Login With Google</a>
+<a href="/auth/logout" class="btn-dark">Logout</a>
+{{!-- FOOTER PARTIAL --}}
+{{> footer}}
