@@ -12,6 +12,7 @@
     <h1>Recent Posts...</h1>
     {{#each posts}}
     <div class="blog-card">
+        {{#if ../showEdit}} {{{makeEditPostButton _id}}} {{/if}}
         <div class="blog-card__thumbnail">
             <img src="./uploads/{{thumbnail}}" alt="" />
         </div>

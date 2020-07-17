@@ -28,7 +28,9 @@ const {
   makeNewPostButton,
   // makeLogOutButton,
   stripTagsAndTruncate,
+  makeEditPostButton,
 } = require("./helpers/hbs");
+const e = require("express");
 // Initialize handlebars view engine
 app.engine(
   ".hbs",
@@ -43,6 +45,7 @@ app.engine(
       makeNewPostButton,
       // makeLogOutButton,
       stripTagsAndTruncate,
+      makeEditPostButton,
     },
   })
 );
@@ -59,25 +62,43 @@ app.use(
 // Initialize passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
 // Initialize homemade logger (delicious!)
 app.use(requestLogger);
+
 // Initialize built in body parser for express
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
 // File uploading
 app.use(fileupload());
+
 // Method Overrides
 app.use(methodOverride("_method"));
-// Set global user var
+
+// See if the logged in user is ME
 app.use(function (req, res, next) {
-  res.locals.user = req.user || null;
-  next();
-});
-// Set global variable to see if a user is logged in
-app.use(function (req, res, next) {
+  // set res.locals.isAuthenticated to either true or false. If a user is signed in, res.locals.isAuthenticated is equal to true.
   res.locals.isAuthenticated = req.isAuthenticated();
-  next();
+  // Check if there is a signed in user, if not, go to the next middleware
+  if (!res.locals.isAuthenticated) {
+    return next();
+  } else {
+    res.locals.user = req.user || null;
+  }
+  // Check if the signed in user is me, if it is, set a bunch of variables to true. IF not, set them to false.
+  if (req.user.googleId === process.env.GOOGLE_ACCOUNT_ID) {
+    res.locals.showPlus = true;
+    res.locals.showEdit = true;
+    res.locals.showDelete = true;
+  } else {
+    res.locals.showPlus = false;
+    res.locals.showEdit = false;
+    res.locals.showDelete = false;
+  }
+  return next();
 });
+
 // Routes
 app.use("/blog", require("./routes/blog"));
 app.use("/auth", require("./routes/auth"));

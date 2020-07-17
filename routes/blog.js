@@ -17,17 +17,13 @@ route.get("/", async (req, res) => {
     .populate("user")
     .sort({ createdAt: "desc" })
     .lean();
-  const user = res.locals.user || {};
 
-  if (user.googleId === process.env.GOOGLE_ACCOUNT_ID) {
-    showPlus = true;
-  } else {
-    showPlus = false;
-  }
+  // For Debugging
+  console.log(res.locals);
+
   res.render("blog", {
     layout: "blog.hbs",
     posts,
-    showPlus,
   });
 });
 
@@ -67,6 +63,23 @@ route.get("/:slug", async (req, res) => {
     .populate("user")
     .lean();
   res.render("blogPost", { layout: "singleBlogPost.hbs", post: post[0] });
+});
+
+// @desc    Deleye single blog post
+// @method  DELETE /blog/delete/blogPostId
+route.delete("/delete/:blogPostId", async (req, res) => {
+  try {
+    const post = await BlogPost.findById(req.params.blogPostId);
+    if (!post) {
+      return res.render("errors/400");
+    }
+    console.log(post);
+    post.remove();
+  } catch (err) {
+    console.log(err);
+  }
+
+  res.redirect("/blog");
 });
 
 // @desc    Create single blog post

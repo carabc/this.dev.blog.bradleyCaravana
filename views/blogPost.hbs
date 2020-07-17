@@ -4,6 +4,12 @@
 {{> hero}}
 <section class="blog-post">
     <div class="header">
+        {{#if showDelete}}
+        <form action="/blog/delete/{{post._id}}?_method=DELETE" method="POST">
+            <button type='submit' class="btn-red"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                Delete Post</button>
+        </form>
+        {{/if}}
         <h1 class="header">{{post.header}}</h1>
         <h3 class="subHeader subHeaderOne">{{post.subHeader}}</h3>
     </div>
