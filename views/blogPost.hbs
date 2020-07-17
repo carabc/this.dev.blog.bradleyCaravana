@@ -4,20 +4,17 @@
 {{> hero}}
 <section class="blog-post">
     <div class="header">
-        <h1 class="header">{{blogPost.header}}</h1>
-        <h3 class="subHeader subHeaderOne">{{blogPost.subHeaderOne}}</h3>
+        <h1 class="header">{{post.header}}</h1>
+        <h3 class="subHeader subHeaderOne">{{post.subHeader}}</h3>
     </div>
-    <div class="blog-tag blog-tag__right">
+    {{!-- <div class="blog-tag blog-tag__right">
         <img src="../images/me.jpg" alt="">
-    </div>
+    </div> --}}
     <div class="metaInfo">
-        <cite class="date">{{formatDate blogPost.createdAt 'MMMM Do, YYYY'}} – </cite>
-        <cite class="author">By {{blogPost.author}}</cite>
+        <cite class="date">{{formatDate post.createdAt 'MMMM Do, YYYY'}} – </cite>
+        <cite class="author">By {{post.author}}</cite>
     </div>
-    <p class="bodyText bodyText">{{blogPost.bodyTextOne}}</p>
-    <h3 class="subHeader subHeaderTwo">{{blogPost.subHeaderTwo}}</h3>
-    <p class="bodyText bodyTextTwo">{{blogPost.bodyTextTwo}}</p>
-
+    {{{post.sanitizedHtml}}}
 </section>
 {{!-- FOOTER PARTIAL --}}
 {{> footer}}

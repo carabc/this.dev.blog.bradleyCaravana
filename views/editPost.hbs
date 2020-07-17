@@ -2,10 +2,10 @@
 {{> nav}}
 {{!-- HERO PARTIAL --}}
 {{> hero}}
-
+{{!-- EDIT POST FORM --}}
 <div class="newPostContainer">
-    <h1>Create a New Blog Post</h1>
-    <form action="/blog/new" method="POST" enctype="multipart/form-data">
+    <h1>Edit {{post.header}}</h1>
+    <form action="/blog/edit/{{post._id}}?_method=PUT" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="header">Header</label>
             <input type="text" class="form-control" name="header">

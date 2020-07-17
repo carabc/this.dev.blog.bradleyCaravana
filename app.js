@@ -9,6 +9,9 @@ const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const requestLogger = require("./middleware/requestLogger");
+const fileupload = require("express-fileupload");
+const methodOverride = require("method-override");
+
 // Init express
 const app = express();
 // Connect to mongoDB
@@ -21,9 +24,10 @@ require("./config/passport")(passport);
 const {
   formatDate,
   truncate,
-  testIfImLoggedIn,
+  // testIfImLoggedIn,
   makeNewPostButton,
-  makeLogOutButton,
+  // makeLogOutButton,
+  stripTagsAndTruncate,
 } = require("./helpers/hbs");
 // Initialize handlebars view engine
 app.engine(
@@ -35,9 +39,10 @@ app.engine(
     helpers: {
       formatDate,
       truncate,
-      testIfImLoggedIn,
+      // testIfImLoggedIn,
       makeNewPostButton,
-      makeLogOutButton,
+      // makeLogOutButton,
+      stripTagsAndTruncate,
     },
   })
 );
@@ -59,6 +64,10 @@ app.use(requestLogger);
 // Initialize built in body parser for express
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+// File uploading
+app.use(fileupload());
+// Method Overrides
+app.use(methodOverride("_method"));
 // Set global user var
 app.use(function (req, res, next) {
   res.locals.user = req.user || null;

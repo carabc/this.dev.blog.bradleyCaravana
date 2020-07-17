@@ -409,11 +409,10 @@ body {
 /* BLOG POST */
 .blog-post {
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
   max-width: 130ch;
   margin: 0 auto;
   overflow: hidden;
-  gap: 0 2.5em;
+  padding: 2em;
 }
 
 .blog-post .header h1 {
@@ -440,10 +439,6 @@ body {
   font-size: 1.75em;
   margin: 10px 0;
   color: var(--purple);
-}
-
-.blog-post > * {
-  grid-column: 2 / span 1;
 }
 
 .blog-post p {
