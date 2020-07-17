@@ -2,6 +2,7 @@
   --purple: rgb(149, 0, 168);
   --purpleClear: rgba(148, 0, 168, 0.253);
   --dark: #333;
+  --google: rgb(255, 64, 64);
 }
 
 html {
@@ -17,6 +18,7 @@ body {
   height: 100%;
 }
 
+/* GLOBAL STYLES */
 .italics {
   font-style: italic;
 }
@@ -46,88 +48,152 @@ body {
   background: var(--purpleClear);
 }
 
-.main-nav {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-auto-rows: 100px;
-  height: auto;
-  width: 100%;
+.header-btn {
+  position: fixed;
+  top: 10%;
+  left: 5%;
+  background: var(--purple);
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  border-bottom: 3px solid var(--purple);
+  cursor: pointer;
 }
 
-.branding {
-  justify-self: center;
-  align-self: center;
-  width: 100%;
+.header-btn i {
+  font-size: 3em;
+  color: #fff;
 }
 
-.branding img {
+/* END GLOBAL STYLES */
+
+/* SIDE NAV */
+
+.nav-container {
   width: 100%;
-  margin: 0;
-  padding: 0;
+  height: 100%;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.384);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-container.open {
+  opacity: 1;
+  pointer-events: all;
+  z-index: 100;
 }
 
 .nav {
   margin: 0;
   padding: 0;
-  width: 100%;
-  justify-self: start;
-}
-
-.nav__links {
-  list-style: none;
+  position: relative;
+  background: #fff;
+  max-width: 20%;
+  height: 100%;
   display: grid;
-  width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(150px, auto));
-  justify-items: center;
-  padding: 0;
-  margin: 0;
+  grid-template-rows: auto auto auto 1fr;
+  padding: 1em;
+  border-right: 2px solid var(--purple);
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-100%);
 }
 
-.nav__item {
-  font-size: 1.5em;
+.nav-container.open .nav {
+  transform: translateX(0%);
 }
 
-.nav__link {
-  text-decoration: none;
-  color: var(--dark);
-  text-transform: uppercase;
-  padding: 0.25em;
-  overflow: hidden;
-  transition: all 0.2s;
+.close-btn {
+  color: var(--purple);
+  font-size: 2em;
+  justify-self: end;
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
 }
 
-.nav__link:hover {
-  background: var(--purple);
-  color: #fff;
+.nav__branding {
+  text-align: center;
 }
 
-.social {
-  margin: 0;
-  padding: 0;
-  justify-self: center;
-}
-
-.social__link {
-  font-size: 2.25em;
+.nav__branding a {
   text-decoration: none;
   color: #333;
-  margin-right: 0.25em;
-  transition: all 0.2s;
 }
 
-.social__link:last-child {
+.nav__branding h1 {
   margin: 0;
 }
 
-.social__link:hover {
+.divider {
+  width: 100%;
+  height: 1px;
+  background: #bbbbbb;
+}
+
+.nav__list {
+  list-style: none;
+  padding: 0;
+  margin-left: 1.6em;
+  text-transform: uppercase;
+}
+
+.nav__list-item {
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.nav__list-link {
+  text-decoration: none;
+  color: #333;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav__list-link:hover {
   color: var(--purple);
+}
+
+.nav__list-link:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--purple);
+  transition: all 0.2s ease-in-out;
+}
+
+.nav__list-link:hover:before {
+  width: 100%;
+}
+
+.btn-red {
+  background: var(--google);
+  text-decoration: none;
+  color: #fff;
+  padding: 0.4em;
+  font-size: 0.9em;
+  box-shadow: 0px 2px 2px 0px rgba(51, 51, 51, 0.39);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-red i {
+  font-size: 1em;
+}
+
+.btn-red:hover {
+  background: rgb(255, 117, 117);
+  border: none;
 }
 
 /* HERO */
 .hero {
-  height: calc(100vh - 103px);
+  height: 100vh;
   background-image: url("../images/meAtTheDocks.JPG");
   background-size: cover;
   background-repeat: no-repeat;
@@ -502,5 +568,37 @@ body {
   .blog-card__footer cite,
   .heart {
     font-size: 0.75em;
+  }
+
+  .close-btn {
+    font-size: 1.5em;
+    right: 10px;
+  }
+
+  .header-btn {
+    width: 50px;
+    height: 50px;
+    bottom: 0;
+    right: 5%;
+  }
+
+  .header-btn i {
+    font-size: 2em;
+  }
+
+  .nav {
+    max-width: 50%;
+  }
+
+  .nav__branding h1 {
+    font-size: 1em;
+  }
+
+  .nav__list {
+    margin-left: 10px;
+  }
+
+  .nav__list-item {
+    font-size: 1em;
   }
 }

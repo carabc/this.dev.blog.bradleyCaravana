@@ -3,13 +3,12 @@ const dotenv = require("dotenv").config({ path: "./config/config.env" });
 const mongoose = require("mongoose");
 const colors = require("colors");
 const exphbs = require("express-handlebars");
-const morgan = require("morgan");
 const connectDB = require("./config/db");
 const path = require("path");
-const moment = require("moment");
 const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+const requestLogger = require("./middleware/requestLogger");
 // Init express
 const app = express();
 // Connect to mongoDB
@@ -24,6 +23,7 @@ const {
   truncate,
   testIfImLoggedIn,
   makeNewPostButton,
+  makeLogOutButton,
 } = require("./helpers/hbs");
 // Initialize handlebars view engine
 app.engine(
@@ -32,7 +32,13 @@ app.engine(
     extname: "hbs",
     defaultLayout: "index.hbs",
     partialsDir: [path.join(__dirname, "views/partials")],
-    helpers: { formatDate, truncate, testIfImLoggedIn, makeNewPostButton },
+    helpers: {
+      formatDate,
+      truncate,
+      testIfImLoggedIn,
+      makeNewPostButton,
+      makeLogOutButton,
+    },
   })
 );
 app.set("view engine", ".hbs");
@@ -48,14 +54,19 @@ app.use(
 // Initialize passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-// Initalize morgan
-app.use(morgan());
+// Initialize homemade logger (delicious!)
+app.use(requestLogger);
 // Initialize built in body parser for express
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 // Set global user var
 app.use(function (req, res, next) {
   res.locals.user = req.user || null;
+  next();
+});
+// Set global variable to see if a user is logged in
+app.use(function (req, res, next) {
+  res.locals.isAuthenticated = req.isAuthenticated();
   next();
 });
 // Routes

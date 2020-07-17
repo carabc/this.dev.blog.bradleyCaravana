@@ -1,7 +1,6 @@
 function ensureAccess(req, res, next) {
   // Check if there is an authenticated user
   if (res.locals.user === null) {
-    console.log(res.locals.user, `USER TYPE`.blue);
     return res.render("errors/signin");
   }
   //   Check if the user is Bradley

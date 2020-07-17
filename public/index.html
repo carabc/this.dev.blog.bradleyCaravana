@@ -11,29 +11,33 @@
     <title>Bradley Caravana || Home</title>
   </head>
   <body>
-    <nav class="main-nav">
-      <div class="branding">
-        <a href="/">
-          <img src="../images/logo.svg" alt="" />
-        </a>
-      </div>
-      <div class="nav">
-        <ul class="nav__links">
-          <li class="nav__item">
-            { <a href="/" class="nav__link">Portfolio</a>
+    <header class="header-btn"><i class="fas fa-bars"></i></header>
+    <div class="nav-container">
+      <nav class="nav">
+        <div class="close-btn"><i class="fas fa-times"></i></div>
+        <div class="nav__branding">
+          <a href="/blog">
+            <h1><span class="highlight">this</span>.dev.blog</h1>
+            <h1>Bradley Caravana</h1>
+          </a>
+        </div>
+        <div class="divider"></div>
+        <ul class="nav__list">
+          <li class="nav__list-item">
+            <a href="/" class="nav__list-link">Home</a>
           </li>
-          <li class="nav__item">
-            <a href="/blog" class="nav__link">Blog</a>
+          <li class="nav__list-item">
+            <a href="/blog" class="nav__list-link">Blog</a>
           </li>
-          <li class="nav__item"><a href="#" class="nav__link">Contact</a> }</li>
+          <li class="nav__list-item">
+            <a href="/portfolio" class="nav__list-link">Portfolio</a>
+          </li>
+          <li class="nav__list-item">
+            <a href="/contact" class="nav__list-link">Contact</a>
+          </li>
         </ul>
-      </div>
-      <div class="social">
-        <a href="#" class="social__link"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="social__link"><i class="fab fa-facebook"></i></a>
-        <a href="#" class="social__link"><i class="fab fa-linkedin"></i></a>
-      </div>
-    </nav>
+      </nav>
+    </div>
 
     <!-- HERO -->
     <div class="hero">
@@ -107,5 +111,6 @@
         return &copy; 2020; }
       </p>
     </footer>
+    <script src="./javascript/entry.js"></script>
   </body>
 </html>
