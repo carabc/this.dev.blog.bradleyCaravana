@@ -2,6 +2,10 @@
 {{> nav}}
 {{!-- HERO PARTIAL --}}
 {{> hero}}
+{{!-- If I'm logged in, show the add new post button --}}
+{{#if showPlus}}
+{{{makeNewPostButton}}}
+{{/if}}
 <section class="blog-post">
     <div class="header">
         {{#if showDelete}}
@@ -9,6 +13,12 @@
             <button type='submit' class="btn-red"><i class="fa fa-trash-o" aria-hidden="true"></i>
                 Delete Post</button>
         </form>
+
+        {{/if}}
+        {{#if showEdit}}
+        <a href="/blog/edit/{{post._id}}" class="edit-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            Edit
+            Post</a>
         {{/if}}
         <h1 class="header">{{post.header}}</h1>
         <h3 class="subHeader subHeaderOne">{{post.subHeader}}</h3>

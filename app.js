@@ -9,28 +9,31 @@ const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const requestLogger = require("./middleware/requestLogger");
+const setResVariables = require("./middleware/setResVariables");
 const fileupload = require("express-fileupload");
 const methodOverride = require("method-override");
 
 // Init express
 const app = express();
+
 // Connect to mongoDB
 connectDB();
+
 // Initialize static folder for express and static html/css files
 app.use(express.static(path.join(__dirname, "/public")));
+
 // Passport config
 require("./config/passport")(passport);
+
 // Handlebars helpers
 const {
   formatDate,
   truncate,
-  // testIfImLoggedIn,
   makeNewPostButton,
-  // makeLogOutButton,
   stripTagsAndTruncate,
   makeEditPostButton,
 } = require("./helpers/hbs");
-const e = require("express");
+
 // Initialize handlebars view engine
 app.engine(
   ".hbs",
@@ -41,15 +44,14 @@ app.engine(
     helpers: {
       formatDate,
       truncate,
-      // testIfImLoggedIn,
       makeNewPostButton,
-      // makeLogOutButton,
       stripTagsAndTruncate,
       makeEditPostButton,
     },
   })
 );
 app.set("view engine", ".hbs");
+
 // Initialize express session middleware
 app.use(
   session({
@@ -59,6 +61,7 @@ app.use(
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
+
 // Initialize passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
@@ -76,28 +79,8 @@ app.use(fileupload());
 // Method Overrides
 app.use(methodOverride("_method"));
 
-// See if the logged in user is ME
-app.use(function (req, res, next) {
-  // set res.locals.isAuthenticated to either true or false. If a user is signed in, res.locals.isAuthenticated is equal to true.
-  res.locals.isAuthenticated = req.isAuthenticated();
-  // Check if there is a signed in user, if not, go to the next middleware
-  if (!res.locals.isAuthenticated) {
-    return next();
-  } else {
-    res.locals.user = req.user || null;
-  }
-  // Check if the signed in user is me, if it is, set a bunch of variables to true. IF not, set them to false.
-  if (req.user.googleId === process.env.GOOGLE_ACCOUNT_ID) {
-    res.locals.showPlus = true;
-    res.locals.showEdit = true;
-    res.locals.showDelete = true;
-  } else {
-    res.locals.showPlus = false;
-    res.locals.showEdit = false;
-    res.locals.showDelete = false;
-  }
-  return next();
-});
+// Check if there is a signed in user, and if the user is me. Set variables on res.locals accordingly.
+app.use(setResVariables);
 
 // Routes
 app.use("/blog", require("./routes/blog"));

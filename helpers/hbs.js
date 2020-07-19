@@ -29,16 +29,12 @@ module.exports = {
     return newStr;
   },
 
-  testIfImLoggedIn: function (loggedInUser, myGoogleId) {
-    return loggedInUser._id === myGoogleId;
-  },
-
   makeNewPostButton: function () {
-    return `<a href="blog/new" class="floating-btn"><i class="fas fa-plus"></i></a>`;
+    return `<a href="/blog/new" class="floating-btn"><i class="fas fa-plus"></i></a>`;
   },
 
   makeEditPostButton: function (postId) {
-    return `<a href="blog/edit/${postId}" class="floating-edit-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+    return `<a href="/blog/edit/${postId}" class="floating-edit-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 </a>`;
   },
 };

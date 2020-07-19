@@ -1,6 +1,6 @@
 function ensureAccess(req, res, next) {
   // Check if there is an authenticated user
-  if (res.locals.user === null) {
+  if (!res.locals.isAuthenticated) {
     return res.render("errors/signin");
   }
   //   Check if the user is Bradley
@@ -10,7 +10,7 @@ function ensureAccess(req, res, next) {
     return res.render("errors/400");
   }
 
-  next();
+  return next();
 }
 
 module.exports = ensureAccess;

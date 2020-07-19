@@ -2,6 +2,10 @@
 {{> nav}}
 {{!-- HERO PARTIAL --}}
 {{> hero}}
+{{!-- If I'm logged in, render a new post button --}}
+{{#if showPlus}}
+{{{makeNewPostButton}}}
+{{/if}}
 
 <div class="newPostContainer">
     <h1>Create a New Blog Post</h1>

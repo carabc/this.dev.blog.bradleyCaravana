@@ -3,7 +3,6 @@ const route = express.Router();
 const postData = require("../data/post");
 const ensureAccess = require("../middleware/ensureAccess");
 const BlogPost = require("../models/BlogPost");
-const e = require("express");
 const path = require("path");
 const moment = require("moment");
 
@@ -11,15 +10,10 @@ const moment = require("moment");
 // @method  GET /blog
 route.get("/", async (req, res) => {
   // use .lean() to get a json object instead of a mongoose object/document so handlebars can process it
-  let showPlus;
-  let isThereALoggedInUser;
   const posts = await BlogPost.find()
     .populate("user")
     .sort({ createdAt: "desc" })
     .lean();
-
-  // For Debugging
-  console.log(res.locals);
 
   res.render("blog", {
     layout: "blog.hbs",
@@ -30,7 +24,7 @@ route.get("/", async (req, res) => {
 // @desc    View Create Blog Post Form
 // @method  GET /blog/new
 route.get("/new", ensureAccess, (req, res) => {
-  res.render("newPost");
+  res.render("posts/newPost");
 });
 
 // @desc    View Edit Blog Post Form
@@ -39,18 +33,25 @@ route.get("/edit/:blogPostId", ensureAccess, async (req, res, next) => {
   const post = await BlogPost.findById(req.params.blogPostId)
     .populate("user")
     .lean();
-  res.render("editPost", { post });
+  res.render("posts/editPost", { post });
 });
 
 // @desc    Edit Blog Post
 // @method  PUT /blog/edit/:blogPostId
 route.put("/edit/:blogPostId", ensureAccess, async (req, res, next) => {
-  let post = await BlogPost.findByIdAndUpdate(req.params.blogPostId, req.body, {
+  let post = await BlogPost.findById(req.params.blogPostId).lean();
+  // If there is no new thumbnail uploaded, set the req.body.thumnail equal to the original post's thumbnail. If there is, set req.body.thumbnail equal to the new uploaded thumbnail from req.files
+  if (req.files === null) {
+    req.body.thumbnail = post.thumbnail;
+  } else {
+    req.body.thumbnail = req.files.thumbnail.name;
+  }
+  post = await BlogPost.findByIdAndUpdate(req.params.blogPostId, req.body, {
     new: true,
     runValidators: true,
   });
 
-  // Run .save() here so the .pre('save') mongoose middleware runs inside of BlogPost.js to update the slug and sanitizedHtml properties of the document
+  // Run .save() here so the .pre('save') mongoose middleware runs inside of BlogPost.js to update the slug and sanitizedHtml properties of the document. I'm able to call save() because I never called .lean() when getting the document the second time. If I were to call lean(), it would be a plain javascript object. If I don't it is still a mongoose document which has the save() method on it.
   post = await post.save();
 
   res.redirect(`/blog/${post.slug}`);
@@ -62,11 +63,11 @@ route.get("/:slug", async (req, res) => {
   const post = await BlogPost.find({ slug: req.params.slug })
     .populate("user")
     .lean();
-  res.render("blogPost", { layout: "singleBlogPost.hbs", post: post[0] });
+  res.render("posts/blogPost", { layout: "singleBlogPost.hbs", post: post[0] });
 });
 
 // @desc    Deleye single blog post
-// @method  DELETE /blog/delete/blogPostId
+// @method  DELETE /blog/delete/:blogPostId
 route.delete("/delete/:blogPostId", async (req, res) => {
   try {
     const post = await BlogPost.findById(req.params.blogPostId);
@@ -87,6 +88,7 @@ route.delete("/delete/:blogPostId", async (req, res) => {
 route.post("/new", async (req, res) => {
   const thumbnail = req.files.thumbnail;
 
+  // Move the thumbnail file into a folder called uploads, and name it the name of the uploaded file.
   thumbnail.mv(
     `${process.env.FILE_UPLOAD_PATH}/${thumbnail.name}`,
     async (err) => {

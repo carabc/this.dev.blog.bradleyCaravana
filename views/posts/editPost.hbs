@@ -3,6 +3,10 @@
 {{!-- HERO PARTIAL --}}
 {{> hero}}
 {{!-- EDIT POST FORM --}}
+{{!-- If I'm logged in, show the add new post button --}}
+{{#if showPlus}}
+{{{makeNewPostButton}}}
+{{/if}}
 <div class="newPostContainer">
     <h1>Edit {{post.header}}</h1>
     <form action="/blog/edit/{{post._id}}?_method=PUT" method="POST" enctype="multipart/form-data">
@@ -27,6 +31,7 @@
             <textarea name="markdown" class="form-control" cols="30" rows="10">{{post.markdown}}</textarea>
         </div>
         <button class="btn-dark" type='submit'>Submit</button>
+        <button href="/blog/{{post.slug}}" class="edit-btn">Cancel</button>
     </form>
 </div>
 {{!-- FOOTER PARTIAL --}}
