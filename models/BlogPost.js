@@ -46,11 +46,6 @@ const PostSchema = new mongoose.Schema({
   viewCount: {
     type: Number,
   },
-  comments: [
-    {
-      type: String,
-    },
-  ],
 });
 
 PostSchema.pre("validate", function (next) {

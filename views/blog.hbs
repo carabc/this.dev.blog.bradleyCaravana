@@ -25,11 +25,7 @@
                     <cite>{{author}}</cite>
                     <cite>{{formatDate createdAt 'MMMM Do, YYYY'}}</cite>
                 </div>
-                <div class="options">
-                    <div class="circle"></div>
-                    <div class="circle"></div>
-                    <div class="circle"></div>
-                </div>
+
             </div>
             <div class="blog-card__title">
                 <h3><a href='/blog/{{slug}}'>{{header}}</a></h3>
@@ -42,12 +38,13 @@
             </div>
             <div class="divider"></div>
             <div class="blog-card__footer">
-                <cite>Write a comment</cite>
-                <div class="heart">2 <3 </div>
+                <div class="heart">
+                    <p> 2 <i class="far fa-heart"></i></p>
                 </div>
             </div>
         </div>
-        {{/each}}
+    </div>
+    {{/each}}
 </section>
 {{else}}
 <section class="recent">

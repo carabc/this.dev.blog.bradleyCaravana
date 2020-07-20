@@ -45,6 +45,16 @@ route.put("/edit/:blogPostId", ensureAccess, async (req, res, next) => {
     req.body.thumbnail = post.thumbnail;
   } else {
     req.body.thumbnail = req.files.thumbnail.name;
+
+    // Move the thumbnail file into a folder called uploads, and name it the name of the uploaded file.
+    req.files.thumbnail.mv(
+      `${process.env.FILE_UPLOAD_PATH}/${req.files.thumbnail.name}`,
+      async (err) => {
+        if (err) {
+          console.error(err);
+        }
+      }
+    );
   }
   post = await BlogPost.findByIdAndUpdate(req.params.blogPostId, req.body, {
     new: true,
@@ -63,6 +73,7 @@ route.get("/:slug", async (req, res) => {
   const post = await BlogPost.find({ slug: req.params.slug })
     .populate("user")
     .lean();
+  console.log(post[0]);
   res.render("posts/blogPost", { layout: "singleBlogPost.hbs", post: post[0] });
 });
 
@@ -109,7 +120,7 @@ route.post("/new", async (req, res) => {
   };
 
   // Create the new blog post by passing the post object to .create()
-  post = await BlogPost.create(post);
+  post = await (await BlogPost.create(post)).save();
   console.log(post);
 
   res.redirect("/blog");
