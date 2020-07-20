@@ -478,6 +478,14 @@ button.btn-red {
 .blog-card__footer p {
   margin: 0;
   padding: 0;
+  font-size: 1em;
+}
+
+.blog-card__footer .heart form button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 /* END RECENT POSTS */
 
@@ -625,6 +633,18 @@ header.blog-header .btn-red {
     font-size: 3em;
   }
   /* END HERO */
+
+  /* ABOUT */
+
+  .about {
+    max-width: 40%;
+  }
+
+  .about .tag img {
+    width: 50%;
+  }
+
+  /* END ABOUT */
 
   /* BLOG CARD */
   .blog-card {

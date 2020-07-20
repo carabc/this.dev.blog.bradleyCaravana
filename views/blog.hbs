@@ -39,7 +39,13 @@
             <div class="divider"></div>
             <div class="blog-card__footer">
                 <div class="heart">
-                    <p> 2 <i class="far fa-heart"></i></p>
+                    <p>Like this post!</p>
+                    <form action="/blog/{{slug}}?_method=PUT" method="POST">
+                        {{likes}} <button type="submit">🔥</button>
+                    </form>
+                </div>
+                <div class="views">
+                    <p>{{viewCount}} <i class="far fa-eye"></i></p>
                 </div>
             </div>
         </div>

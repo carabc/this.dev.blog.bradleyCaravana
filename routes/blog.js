@@ -2,7 +2,9 @@ const express = require("express");
 const route = express.Router();
 const postData = require("../data/post");
 const ensureAccess = require("../middleware/ensureAccess");
+const ensurePermissionToLikePost = require("../middleware/ensurePermissionToLikePost");
 const BlogPost = require("../models/BlogPost");
+const User = require("../models/User");
 const path = require("path");
 const moment = require("moment");
 
@@ -19,6 +21,28 @@ route.get("/", async (req, res) => {
     layout: "blog.hbs",
     posts,
   });
+});
+
+// @desc    Like a blog post
+// @method  PUT /blog
+route.put("/:slug", ensurePermissionToLikePost, async (req, res) => {
+  // Find the post by the slug and increment the likes field by 1
+  const post = await BlogPost.findOneAndUpdate(
+    { slug: req.params.slug },
+    { $inc: { likes: 1 } }
+  );
+
+  // Find a user by the logged in users id on the req object and update the array of liked posts to include the post being liked
+  const user = await User.findByIdAndUpdate(req.user._id, {
+    $push: { likedPosts: post._id },
+  });
+
+  // Save both the user and post document changes
+  await post.save();
+  await user.save();
+
+  // Redirect the client to the blog page
+  res.redirect("/blog");
 });
 
 // @desc    View Create Blog Post Form
@@ -70,9 +94,14 @@ route.put("/edit/:blogPostId", ensureAccess, async (req, res, next) => {
 // @desc    Get single blog post
 // @method  GET /blog/:slug
 route.get("/:slug", async (req, res) => {
-  const post = await BlogPost.find({ slug: req.params.slug })
-    .populate("user")
-    .lean();
+  // Find the blog post by the slug, and increment the view count by one
+  let post = await BlogPost.findOneAndUpdate(
+    { slug: req.params.slug },
+    { $inc: { viewCount: 1 } }
+  );
+  // Save the view count changes
+  await post.save();
+  post = await BlogPost.find({ slug: req.params.slug }).populate("user").lean();
   console.log(post[0]);
   res.render("posts/blogPost", { layout: "singleBlogPost.hbs", post: post[0] });
 });
