@@ -282,7 +282,7 @@ button.btn-red {
 /* HERO */
 .hero {
   height: 80vh;
-  background-image: url("../images/meAtTheDocks.JPG");
+  background-image: url("/images/meAtTheDocks.JPG");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top right;
