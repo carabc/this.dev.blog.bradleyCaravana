@@ -1,12 +1,9 @@
 const express = require("express");
 const route = express.Router();
-const postData = require("../data/post");
 const ensureAccess = require("../middleware/ensureAccess");
 const ensurePermissionToLikePost = require("../middleware/ensurePermissionToLikePost");
 const BlogPost = require("../models/BlogPost");
 const User = require("../models/User");
-const path = require("path");
-const moment = require("moment");
 
 // @desc    Get all blog posts
 // @method  GET /blog
@@ -106,7 +103,7 @@ route.get("/:slug", async (req, res) => {
   res.render("posts/blogPost", { layout: "singleBlogPost.hbs", post: post[0] });
 });
 
-// @desc    Deleye single blog post
+// @desc    Delete single blog post
 // @method  DELETE /blog/delete/:blogPostId
 route.delete("/delete/:blogPostId", async (req, res) => {
   try {

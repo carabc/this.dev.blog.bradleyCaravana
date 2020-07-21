@@ -74,6 +74,8 @@ app.use(requestLogger);
 
 // Initialize built in body parser for express
 app.use(express.urlencoded({ extended: false }));
+
+// Incase I want to send JSON in the body (although it isn't being used as of right now)
 app.use(express.json());
 
 // File uploading
@@ -88,6 +90,7 @@ app.use(setResVariables);
 // Routes
 app.use("/blog", require("./routes/blog"));
 app.use("/auth", require("./routes/auth"));
+app.use("/contact", require("./routes/contact"));
 
 // Route for the homepage, send the client the static homepage
 app.get("/", (req, res) => {

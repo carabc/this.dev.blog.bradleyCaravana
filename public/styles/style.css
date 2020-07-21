@@ -604,14 +604,46 @@ header.blog-header .btn-red {
 .form-control {
   display: block;
   width: calc(100% - 6px);
-  margin-top: 10px;
+  margin: 10px 0 20px 0;
 }
 
-.form-control[type="text"] {
+.form-control[type="text"],
+.form-control[type="email"] {
   height: 3em;
   font-size: 1em;
 }
 /* END NEW POST FORM */
+
+/* CONTACT */
+
+section.contact {
+  display: grid;
+  gap: 2em 0;
+  max-width: 90%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.contact__header {
+  font-size: 1.5em;
+  margin: 1.25em 0 0 0;
+}
+
+section.contact label {
+  font-size: 1.5em;
+}
+
+section.contact button {
+  display: block;
+  width: 100%;
+  color: #333;
+}
+
+section.contact button:hover {
+  color: #fff;
+}
+
+/* END CONTACT */
 
 /* Footer */
 .footer {
@@ -704,6 +736,23 @@ header.blog-header .btn-red {
   }
 
   /* END PORTFOLIO */
+
+  /* CONTACT */
+
+  section.contact {
+    display: grid;
+    gap: 2em 0;
+    max-width: 60%;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .contact__header {
+    font-size: 2em;
+    margin: 1.25em 0 0 0;
+  }
+
+  /* END CONTACT */
 
   /* BLOG CARD */
   .blog-card {
