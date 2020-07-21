@@ -1,5 +1,5 @@
 const express = require("express");
-const dotenv = require("dotenv").config({ path: "./config/config.env" });
+const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const colors = require("colors");
 const exphbs = require("express-handlebars");
@@ -15,6 +15,9 @@ const methodOverride = require("method-override");
 
 // Init express
 const app = express();
+
+// Load config
+dotenv.config({ path: "./config/config.env" });
 
 // Connect to mongoDB
 connectDB();
