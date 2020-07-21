@@ -11,6 +11,7 @@ route.get("/", (req, res) => {
 // @desc    Send Contact Form
 // @method  POST /contact/send
 route.post("/send", async (req, res) => {
+  let msg = "";
   //   HTML output string that will appear in the inbox
   const output = `
     <p>You have a new contact request!</p>
@@ -52,6 +53,7 @@ route.post("/send", async (req, res) => {
           console.log(err);
         } else {
           console.log("Your message has been sent!");
+          msg = "Your message has been sent!";
         }
       }
     );
@@ -60,7 +62,7 @@ route.post("/send", async (req, res) => {
   }
 
   res.render("contact", {
-    msg: "Your message has been sent!",
+    msg,
   });
 });
 

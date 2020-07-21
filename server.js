@@ -12,6 +12,7 @@ const requestLogger = require("./middleware/requestLogger");
 const setResVariables = require("./middleware/setResVariables");
 const fileupload = require("express-fileupload");
 const methodOverride = require("method-override");
+const errorHandler = require("./middleware/error");
 
 // Init express
 const app = express();
@@ -89,8 +90,13 @@ app.use(setResVariables);
 
 // Routes
 app.use("/blog", require("./routes/blog"));
-app.use("/auth", require("./routes/auth"));
 app.use("/contact", require("./routes/contact"));
+
+// Error handler middleware
+// app.use(errorHandler);
+
+// Passport routes
+app.use("/auth", require("./routes/auth"));
 
 // Route for the homepage, send the client the static homepage
 app.get("/", (req, res) => {
