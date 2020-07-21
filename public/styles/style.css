@@ -10,7 +10,7 @@
 html {
   box-sizing: border-box;
   height: 100%;
-  font-family: "Fira Code iScript";
+  font-family: "Fira Code iScript", "Fira Code", sans-serif;
 }
 
 body {
