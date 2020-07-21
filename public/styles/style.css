@@ -25,19 +25,22 @@ body {
 .edit-btn,
 button.edit-btn {
   text-decoration: none;
-  background: var(--purple);
-  color: #fff;
+  background: none;
+  color: #333;
   padding: 0.4em;
   margin-top: 10px;
   transition: all 0.2s ease-in-out;
   font-weight: bold;
   font-size: 1.25em;
   cursor: pointer;
+  text-align: center;
+  border: 1px solid var(--purple);
 }
 
 .edit-btn:hover,
 button.edit-btn:hover {
-  background: var(--purpleClear);
+  background: var(--purple);
+  color: #fff;
 }
 
 button.edit-btn {
@@ -489,6 +492,38 @@ button.btn-red {
 }
 /* END RECENT POSTS */
 
+/* PORTFOLIO */
+.portfolio {
+  display: grid;
+  max-width: 90%;
+  margin: 0 auto;
+  overflow: hidden;
+  justify-items: center;
+  gap: 3em 0;
+}
+
+.portfolio h1.portfolio__header {
+  justify-self: left;
+  font-size: 2em;
+  margin: 1em 0 0 0;
+}
+
+.portfolio .blog-card {
+  background: #333;
+  color: #fff;
+}
+
+.portfolio .btn-dark {
+  font-size: 0.75em;
+  font-style: normal;
+}
+
+.portfolio .btn-dark:hover {
+  background: #fff;
+  color: #333;
+}
+/* END PORTFOLIO */
+
 /* BLOG POST */
 
 header.blog-header {
@@ -646,9 +681,34 @@ header.blog-header .btn-red {
 
   /* END ABOUT */
 
+  /* PORTFOLIO */
+
+  .portfolio {
+    max-width: 70%;
+  }
+
+  .portfolio .blog-card {
+    max-width: 80%;
+  }
+
+  .portfolio h1.portfolio__header {
+    font-size: 3em;
+  }
+
+  .portfolio .blog-card h5 {
+    font-size: 1em;
+  }
+
+  .portfolio .btn-dark {
+    font-size: 1em;
+  }
+
+  /* END PORTFOLIO */
+
   /* BLOG CARD */
   .blog-card {
     grid-template-columns: repeat(2, 1fr);
+    max-width: 70%;
   }
 
   .blog-card__title h3 {
@@ -659,6 +719,12 @@ header.blog-header .btn-red {
     font-size: 1.25em;
   }
   /* END BLOG CARD */
+
+  /* RECENT POSTS */
+  .recent h1.recent__header {
+    font-size: 2.5em;
+  }
+  /* END RECENT POSTS */
 
   /* NEW POST FORM */
   .newPostContainer {

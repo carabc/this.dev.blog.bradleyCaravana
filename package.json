@@ -2,9 +2,10 @@
   "name": "this.dev.blog",
   "version": "1.0.0",
   "description": "Bradley Caravana Blog, this.dev.blog",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "author": "Bradley Caravana",
   "license": "MIT",

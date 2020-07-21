@@ -9,7 +9,7 @@
 {{/if}}
 {{#if posts}}
 <section class="recent">
-    <h1>Recent Posts...</h1>
+    <h1 class="recent__header">Recent Posts...</h1>
     {{#each posts}}
     <div class="blog-card">
         {{#if ../showEdit}} {{{makeEditPostButton _id}}} {{/if}}
