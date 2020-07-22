@@ -28,7 +28,7 @@ connectDB();
 app.use(express.static(path.join(__dirname, "/public")));
 
 // Passport config
-initPassport(passport);
+app.use(initPassport(passport));
 
 // Handlebars helpers
 const {
