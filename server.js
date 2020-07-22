@@ -13,6 +13,7 @@ const setResVariables = require("./middleware/setResVariables");
 const fileupload = require("express-fileupload");
 const methodOverride = require("method-override");
 const errorHandler = require("./middleware/error");
+const initPassport = require("./config/passport");
 
 // Init express
 const app = express();
@@ -27,7 +28,7 @@ connectDB();
 app.use(express.static(path.join(__dirname, "/public")));
 
 // Passport config
-require("./config/passport")(passport);
+initPassport(passport);
 
 // Handlebars helpers
 const {

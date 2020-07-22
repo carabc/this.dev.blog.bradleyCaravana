@@ -2,7 +2,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mongoose = require("mongoose");
 const User = require("../models/User");
 
-module.exports = function (passport) {
+async function initPassport(passport) {
   passport.use(
     new GoogleStrategy(
       {
@@ -42,4 +42,6 @@ module.exports = function (passport) {
       done(err, user);
     });
   });
-};
+}
+
+module.exports = initPassport;
