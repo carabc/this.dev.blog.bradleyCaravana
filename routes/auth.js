@@ -10,7 +10,7 @@ route.get("/google", passport.authenticate("google", { scope: ["profile"] }));
 // @route   GET /auth/google/callback
 route.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", { failureRedirect: "/blog" }),
   (req, res) => {
     // Successful authentication, redirect home
     res.redirect("/blog");
