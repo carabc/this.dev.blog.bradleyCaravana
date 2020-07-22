@@ -672,7 +672,6 @@ section.contact button:hover {
 .login-container {
   max-width: 80%;
   margin: 0 auto;
-  overflow: hidden;
   height: 100%;
   display: grid;
   justify-items: center;
@@ -686,7 +685,7 @@ section.contact button:hover {
   height: 2.5em;
   background: none;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1em;
   padding: 0;
   transition: all 0.2s;
   text-transform: uppercase;
@@ -710,21 +709,10 @@ section.contact button:hover {
   justify-content: space-evenly;
 }
 
-.login-container .btn__red {
-  background: rgb(255, 64, 64);
-  box-shadow: 0px 2px 2px 0px rgba(51, 51, 51, 0.39);
-  margin: 0;
-}
-
 .login-container .btn:hover {
   color: #000;
   background: rgba(255, 255, 255, 0.671);
   border-color: #333;
-}
-
-.login-container .btn__red:hover {
-  background: rgb(255, 117, 117);
-  border: none;
 }
 
 .login-container .btn__light:hover {
@@ -737,10 +725,9 @@ section.contact button:hover {
 }
 
 .login-container .card {
-  width: 400px;
+  width: 100%;
   padding: 1em;
-  border-radius: 2px;
-  border: 1px solid rgba(0, 0, 0, 0.041);
+  border: 1px solid rgba(0, 0, 0, 0.267);
   box-shadow: 0px 2px 2px 0px rgba(51, 51, 51, 0.39);
 }
 
@@ -749,7 +736,7 @@ section.contact button:hover {
 }
 
 .login-container .card__title h1 {
-  font-family: "Fira Code iScript";
+  font-size: 1em;
 }
 
 .login-container .divider {
@@ -801,6 +788,12 @@ section.contact button:hover {
     width: 76px;
     height: 76px;
     font-size: 2.5em;
+  }
+
+  /* LOGIN PAGE */
+
+  .login-container {
+    max-width: 20%;
   }
 
   /* Navigation */
