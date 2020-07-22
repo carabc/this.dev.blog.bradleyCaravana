@@ -14,7 +14,7 @@ const fileupload = require("express-fileupload");
 const methodOverride = require("method-override");
 const errorHandler = require("./middleware/error");
 const initPassport = require("./config/passport");
-const User = require("../models/User");
+const User = require("./models/User");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 // Init express
