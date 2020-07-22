@@ -1,18 +1,14 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const mongoose = require("mongoose");
 const colors = require("colors");
 const exphbs = require("express-handlebars");
 const connectDB = require("./config/db");
 const path = require("path");
-const passport = require("passport");
-const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
 const requestLogger = require("./middleware/requestLogger");
-const setResVariables = require("./middleware/setResVariables");
+
 const fileupload = require("express-fileupload");
+const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override");
-const initPassport = require("./config/passport");
 
 // Init express
 const app = express();
@@ -25,9 +21,6 @@ connectDB();
 
 // Initialize static folder for express and static html/css files
 app.use(express.static(path.join(__dirname, "/public")));
-
-// Passport config
-initPassport(passport);
 
 // Handlebars helpers
 const {
@@ -56,28 +49,17 @@ app.engine(
 );
 app.set("view engine", ".hbs");
 
-// Initialize express session middleware
-app.use(
-  session({
-    secret: "ralphies butt",
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  })
-);
-
-// Initialize passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Initialize homemade logger (delicious!)
 app.use(requestLogger);
 
 // Initialize built in body parser for express
 app.use(express.urlencoded({ extended: false }));
 
-// Incase I want to send JSON in the body (although it isn't being used as of right now)
+// Incase I want to send JSON in the body (used for auth testing using JWT)
 app.use(express.json());
+
+// Cookie parser
+app.use(cookieParser());
 
 // File uploading
 app.use(fileupload());
@@ -85,18 +67,13 @@ app.use(fileupload());
 // Method Overrides
 app.use(methodOverride("_method"));
 
-// Check if there is a signed in user, and if the user is me. Set variables on res.locals accordingly.
-app.use(setResVariables);
-
 // Routes
-app.use("/blog", require("./routes/blog"));
+app.use("/auth", require("./routes/auth"));
 app.use("/contact", require("./routes/contact"));
+app.use("/blog", require("./routes/blog"));
 
 // Error handler middleware
 // app.use(errorHandler);
-
-// Passport routes
-app.use("/auth", require("./routes/auth"));
 
 // Route for the homepage, send the client the static homepage
 app.get("/", (req, res) => {

@@ -2,6 +2,7 @@ const BlogPost = require("../models/BlogPost");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
+const findUserInToken = require("../middleware/findUserInToken");
 
 // @desc    Get all blog posts
 // @route  GET /blog
@@ -12,6 +13,9 @@ exports.getAllBlogPosts = asyncHandler(async (req, res, next) => {
     .populate("user")
     .sort({ createdAt: "desc" })
     .lean();
+
+  await findUserInToken(req, res);
+  console.log(res.locals);
 
   res.render("blog", {
     layout: "blog.hbs",

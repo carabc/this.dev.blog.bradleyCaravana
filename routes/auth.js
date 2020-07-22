@@ -1,36 +1,18 @@
 const express = require("express");
-const route = express.Router();
-const passport = require("passport");
+const {
+  register,
+  registerPage,
+  login,
+  loginPage,
+  getMe,
+} = require("../controllers/auth");
+const { protect } = require("../middleware/auth");
+const router = express.Router();
 
-// @desc    Auth with Google
-// @route   GET /auth/google
-// route.get("/google", passport.authenticate("google", { scope: ["profile"] }));
-route.get(
-  "/google",
-  passport.authenticate("google", {
-    scope: [
-      "https://www.googleapis.com/auth/plus.login",
-      "https://www.googleapis.com/auth/plus.profile.emails.read",
-    ],
-  })
-);
+router.get("/register", registerPage);
+router.post("/register", register);
+router.get("/login", loginPage);
+router.post("/login", login);
+router.get("/getMe", protect, getMe);
 
-// @desc    Google Auth Callback
-// @route   GET /auth/google/callback
-route.get(
-  "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/blog" }),
-  (req, res) => {
-    // Successful authentication, redirect home
-    res.redirect("/blog");
-  }
-);
-
-// @desc    Logout user
-// @route   GET /auth/logout
-route.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/blog");
-});
-
-module.exports = route;
+module.exports = router;

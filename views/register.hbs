@@ -1,0 +1,32 @@
+<div class="login-container">
+    <div class="card">
+        <div class="card__title">
+            <h1><span class="highlight">this</span>.dev.blog</h1>
+            <p>Web Development || Bradley Caravana</p>
+        </div>
+        <div class="divider"></div>
+        <div class="card__body">
+            <h2>Register</h2>
+            <form action="/auth/register" method="POST">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" name="firstName" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" name="lastName" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn__light">Register</button>
+            </form>
+        </div>
+
+    </div>
+</div>

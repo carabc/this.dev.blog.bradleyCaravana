@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const ensureAccess = require("../middleware/ensureAccess");
-const ensurePermissionToLikePost = require("../middleware/ensurePermissionToLikePost");
 const {
   getAllBlogPosts,
   likeABlogPost,
@@ -12,23 +10,24 @@ const {
   deleteSingleBlogPost,
   createSingleBlogPost,
 } = require("../controllers/blog");
+const { protect } = require("../middleware/auth");
 
 router.route("/").get(getAllBlogPosts);
 
-router.route("/:slug").put(ensurePermissionToLikePost, likeABlogPost);
+router.route("/:slug").put(likeABlogPost);
 
 router
   .route("/new")
-  .get(ensureAccess, viewCreateBlogPostForm)
-  .post(ensureAccess, createSingleBlogPost);
+  .get(protect, viewCreateBlogPostForm)
+  .post(protect, createSingleBlogPost);
 
 router
   .route("/edit/:blogPostId")
-  .get(ensureAccess, viewEditBlogPostForm)
-  .put(ensureAccess, editBlogPost);
+  .get(protect, viewEditBlogPostForm)
+  .put(protect, editBlogPost);
 
 router.route("/:slug").get(getSingleBlogPost);
 
-router.route("/delete/:blogPostId").delete(ensureAccess, deleteSingleBlogPost);
+router.route("/delete/:blogPostId").delete(protect, deleteSingleBlogPost);
 
 module.exports = router;
