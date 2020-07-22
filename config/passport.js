@@ -8,7 +8,7 @@ async function initPassport(passport) {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://bradleycaravana.com/auth/google/callback",
+        callbackURL: "http://www.bradleycaravana.com/auth/google/callback",
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
