@@ -10,7 +10,7 @@
 html {
   box-sizing: border-box;
   height: 100%;
-  font-family: "Fira Code iScript", "Fira Code", sans-serif;
+  font-family: "Fira Code", sans-serif;
 }
 
 body {
@@ -81,7 +81,6 @@ button.btn-dark {
   padding: 0.5em;
   font-size: 1.25em;
   font-style: italic;
-  font-weight: bold;
   transition: all 0.2s;
   border: 1px solid var(--dark);
 }
@@ -89,7 +88,6 @@ button.btn-dark {
 .btn-dark:hover,
 button.btn-dark:hover {
   background: rgba(255, 255, 255, 0.301);
-  font-weight: bold;
   color: #fff;
   background: var(--dark);
 }
@@ -249,8 +247,22 @@ button.btn-red {
   margin-bottom: 0.5em;
 }
 
-.nav__list-item .btn-red {
+.nav__list-item .btn-dark {
   font-size: 0.75em;
+  background: #333;
+  color: #fff;
+}
+
+.nav__list-item .btn-dark:hover {
+  background: #fff;
+  color: #333;
+}
+
+.nav__list-item .greeting {
+  margin: 0;
+  display: inline;
+  color: var(--purple);
+  font-weight: bold;
 }
 
 .nav__list-link {
@@ -815,7 +827,7 @@ section.contact button:hover {
     font-size: 1.5em;
   }
 
-  .nav__list-item .btn-red {
+  .nav__list-item .btn-dark {
     font-size: 1em;
   }
 

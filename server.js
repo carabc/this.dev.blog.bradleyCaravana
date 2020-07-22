@@ -5,7 +5,7 @@ const exphbs = require("express-handlebars");
 const connectDB = require("./config/db");
 const path = require("path");
 const requestLogger = require("./middleware/requestLogger");
-
+const findUserInToken = require("./middleware/findUserInToken");
 const fileupload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const methodOverride = require("method-override");
@@ -66,6 +66,9 @@ app.use(fileupload());
 
 // Method Overrides
 app.use(methodOverride("_method"));
+
+// Find the user in the JWT, if there is one
+app.use(findUserInToken);
 
 // Routes
 app.use("/auth", require("./routes/auth"));

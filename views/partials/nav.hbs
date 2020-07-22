@@ -22,13 +22,13 @@
             <li class="nav__list-item">
                 <a href="/contact" class="nav__list-link">Contact</a>
             </li>
-            {{#if isAuthenticated}}
+            {{#if user}}
             <li class="nav__list-item">
-                <a href="/auth/logout" class="btn-red">Sign Out</a>
+                <p class="greeting">Hello, {{firstName}}</p>
             </li>
             {{else}}
             <li class="nav__list-item">
-                <a href="/auth/google" class="btn-red"><i class="fab fa-google fa-lg"></i> Sign in With Google</a>
+                <a href="/auth/login" class="btn-dark">Sign In</a>
             </li>
             {{/if}}
         </ul>

@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-async function findUserInToken(req, res) {
+async function findUserInToken(req, res, next) {
   let token;
   // Check if there is a cookie token
   if (!req.cookies.token) {
-    return;
+    return next();
   }
 
   // Set the token
@@ -13,7 +13,7 @@ async function findUserInToken(req, res) {
 
   // Make sure there is a token
   if (!token) {
-    return;
+    return next();
   }
 
   try {
@@ -24,7 +24,7 @@ async function findUserInToken(req, res) {
 
     // Check if there is a user
     if (!req.user) {
-      return;
+      return next();
     }
 
     // Set user object on res.locals
@@ -32,7 +32,7 @@ async function findUserInToken(req, res) {
 
     if (req.user.email === process.env.MY_EMAIL) {
       console.log("User Is Bradley...");
-      console.log("Setting res variables...");
+      console.log("Setting res variables to true...");
 
       res.locals.showPlus = true;
       res.locals.showEdit = true;
@@ -46,10 +46,14 @@ async function findUserInToken(req, res) {
       res.locals.showDelete = false;
     }
 
-    return;
+    res.locals.firstName = req.user.firstName;
+    res.locals.lastName = req.user.lastName;
+    res.locals.email = req.user.email;
+
+    return next();
   } catch (err) {
     console.log(err);
-    return;
+    return next();
   }
 }
 

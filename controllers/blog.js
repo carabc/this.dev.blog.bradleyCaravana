@@ -2,7 +2,6 @@ const BlogPost = require("../models/BlogPost");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
-const findUserInToken = require("../middleware/findUserInToken");
 
 // @desc    Get all blog posts
 // @route  GET /blog
@@ -14,7 +13,7 @@ exports.getAllBlogPosts = asyncHandler(async (req, res, next) => {
     .sort({ createdAt: "desc" })
     .lean();
 
-  await findUserInToken(req, res);
+  // await findUserInToken(req, res);
   console.log(res.locals);
 
   res.render("blog", {
@@ -27,6 +26,12 @@ exports.getAllBlogPosts = asyncHandler(async (req, res, next) => {
 // @route  PUT /blog/:slug
 // @access Logged in users only
 exports.likeABlogPost = asyncHandler(async (req, res, next) => {
+  if (!res.locals.user) {
+    console.log(res.locals);
+    console.log("there is no user on res.locals...");
+    return res.redirect("/auth/login");
+  }
+
   // Find the post by the slug and increment the likes field by 1
   const post = await BlogPost.findOneAndUpdate(
     { slug: req.params.slug },
@@ -39,20 +44,27 @@ exports.likeABlogPost = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Find a user by the logged in users id on the req object and update the array of liked posts to include the post being liked
-  const user = await User.findByIdAndUpdate(req.user._id, {
-    $push: { likedPosts: post._id },
-  });
+  //Find a user by the logged in users id on the res.locals object and update the array of liked posts to include the post being liked
+  try {
+    const user = await User.findByIdAndUpdate(res.locals.user._id, {
+      $push: { likedPosts: post._id },
+    });
 
-  if (!user) {
-    return next(
-      new ErrorResponse(`No user found with id ${req.user._id}`, 404)
-    );
+    if (!user) {
+      return next(
+        new ErrorResponse(`No user found with id ${req.user._id}`, 404)
+      );
+    }
+
+    console.log(user);
+
+    // Save post document changes
+    await post.save();
+  } catch (err) {
+    console.log(err);
+    console.log("Something went wrong...");
+    return res.redirect("/");
   }
-
-  // Save both the user and post document changes
-  await post.save();
-  await user.save();
 
   // Redirect the client to the blog page
   res.redirect("/blog");
