@@ -8,7 +8,10 @@ const passport = require("passport");
 route.get(
   "/google",
   passport.authenticate("google", {
-    scope: ["https://www.googleapis.com/auth/plus.login"],
+    scope: [
+      "https://www.googleapis.com/auth/plus.login",
+      "https://www.googleapis.com/auth/plus.profile.emails.read",
+    ],
   })
 );
 
