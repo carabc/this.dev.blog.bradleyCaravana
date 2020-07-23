@@ -190,6 +190,33 @@ exports.getSingleBlogPost = asyncHandler(async (req, res, next) => {
     });
   }
 
+  // If there is a logged in user and it isn't me
+  // Find the blog post by the slug, and increment the view count by one
+  post = await BlogPost.findOneAndUpdate(
+    { slug: req.params.slug },
+    { $inc: { viewCount: 1 } }
+  );
+
+  if (!post) {
+    return next(
+      new ErrorResponse(`No Post Found With Title ${req.params.slug}`)
+    );
+  }
+
+  // Save the view count changes
+  await post.save();
+  post = await BlogPost.find({ slug: req.params.slug }).populate("user").lean();
+  if (!post) {
+    return next(
+      new ErrorResponse(`No Post Found With Title ${req.params.slug}`)
+    );
+  }
+  console.log(post[0]);
+  res.render("posts/blogPost", {
+    layout: "singleBlogPost.hbs",
+    post: post[0],
+  });
+
   // If the user isn't me or there isn't a logged in user
 });
 
