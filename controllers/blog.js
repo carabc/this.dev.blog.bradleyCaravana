@@ -144,6 +144,36 @@ exports.getSingleBlogPost = asyncHandler(async (req, res, next) => {
   let user = res.locals.user;
   let post;
 
+  if (!user) {
+    // Find the blog post by the slug, and increment the view count by one
+    post = await BlogPost.findOneAndUpdate(
+      { slug: req.params.slug },
+      { $inc: { viewCount: 1 } }
+    );
+
+    if (!post) {
+      return next(
+        new ErrorResponse(`No Post Found With Title ${req.params.slug}`)
+      );
+    }
+
+    // Save the view count changes
+    await post.save();
+    post = await BlogPost.find({ slug: req.params.slug })
+      .populate("user")
+      .lean();
+    if (!post) {
+      return next(
+        new ErrorResponse(`No Post Found With Title ${req.params.slug}`)
+      );
+    }
+    console.log(post[0]);
+    return res.render("posts/blogPost", {
+      layout: "singleBlogPost.hbs",
+      post: post[0],
+    });
+  }
+
   if (user.email === process.env.MY_EMAIL) {
     post = await BlogPost.find({ slug: req.params.slug })
       .populate("user")
@@ -161,28 +191,6 @@ exports.getSingleBlogPost = asyncHandler(async (req, res, next) => {
   }
 
   // If the user isn't me or there isn't a logged in user
-  // Find the blog post by the slug, and increment the view count by one
-  post = await BlogPost.findOneAndUpdate(
-    { slug: req.params.slug },
-    { $inc: { viewCount: 1 } }
-  );
-
-  if (!post) {
-    return next(
-      new ErrorResponse(`No Post Found With Title ${req.params.slug}`)
-    );
-  }
-
-  // Save the view count changes
-  await post.save();
-  post = await BlogPost.find({ slug: req.params.slug }).populate("user").lean();
-  if (!post) {
-    return next(
-      new ErrorResponse(`No Post Found With Title ${req.params.slug}`)
-    );
-  }
-  console.log(post[0]);
-  res.render("posts/blogPost", { layout: "singleBlogPost.hbs", post: post[0] });
 });
 
 // @desc    Delete single blog post
