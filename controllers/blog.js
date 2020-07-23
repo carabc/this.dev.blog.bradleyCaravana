@@ -2,27 +2,16 @@ const BlogPost = require("../models/BlogPost");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const User = require("../models/User");
-const {
-  findPost,
-  findPosts,
-  updatePost,
-  findPostByIdAndUpdateViewCount,
-  findPostAndUpdateViewCount,
-  findPostByIdAndUpdate,
-} = require("../utils/findPost");
-const {} = require("../utils/findUser");
 
 // @desc    Get all blog posts
 // @route  GET /blog
 // @access Public
 exports.getAllBlogPosts = asyncHandler(async (req, res, next) => {
   // use .lean() to get a json object instead of a mongoose object/document so handlebars can process it
-  // const posts = await BlogPost.find()
-  //   .populate("user")
-  //   .sort({ createdAt: "desc" })
-  //   .lean();
-
-  const posts = await findPosts("user");
+  const posts = await BlogPost.find()
+    .populate("user")
+    .sort({ createdAt: "desc" })
+    .lean();
 
   res.render("blog", {
     layout: "blog.hbs",
@@ -57,12 +46,10 @@ exports.likeABlogPost = asyncHandler(async (req, res, next) => {
     }
 
     // If the post can't be found in the likedPosts array of the user, increment the like count by 1
-    // const post = await BlogPost.findOneAndUpdate(
-    //   { slug: req.params.slug },
-    //   { $inc: { likes: 1 } }
-    // );
-
-    const post = await findPostAndUpdateViewCount({ slug: req.params.slug });
+    const post = await BlogPost.findOneAndUpdate(
+      { slug: req.params.slug },
+      { $inc: { likes: 1 } }
+    );
 
     if (!post) {
       return next(
@@ -92,11 +79,9 @@ exports.viewCreateBlogPostForm = (req, res, next) => {
 // @desc    View Edit Blog Post Form
 // @method  GET /blog/edit/:blogPostId
 exports.viewEditBlogPostForm = asyncHandler(async (req, res, next) => {
-  // const post = await BlogPost.findById(req.params.blogPostId)
-  //   .populate("user")
-  //   .lean();
-
-  const post = await findPost(req.params.blogPostId, "user").lean();
+  const post = await BlogPost.findById(req.params.blogPostId)
+    .populate("user")
+    .lean();
 
   if (!post) {
     return next(
@@ -109,9 +94,7 @@ exports.viewEditBlogPostForm = asyncHandler(async (req, res, next) => {
 // @desc    Edit Blog Post
 // @method  PUT /blog/edit/:blogPostId
 exports.editBlogPost = asyncHandler(async (req, res, next) => {
-  // let post = await BlogPost.findById(req.params.blogPostId).lean();
-
-  let post = await findPost(req.params.blogPostId, "user").lean();
+  let post = await BlogPost.findById(req.params.blogPostId).lean();
 
   if (!post) {
     return next(
@@ -135,12 +118,7 @@ exports.editBlogPost = asyncHandler(async (req, res, next) => {
       }
     );
   }
-  // post = await BlogPost.findByIdAndUpdate(req.params.blogPostId, req.body, {
-  //   new: true,
-  //   runValidators: true,
-  // });
-
-  post = await findPostByIdAndUpdate(req.params.blogPostId, req.body, {
+  post = await BlogPost.findByIdAndUpdate(req.params.blogPostId, req.body, {
     new: true,
     runValidators: true,
   });
@@ -164,14 +142,12 @@ exports.getSingleBlogPost = asyncHandler(async (req, res, next) => {
   let user = res.locals.user;
   let post;
 
-  if (!user) {
+  if (!user || user.email !== process.env.MY_EMAIL) {
     // Find the blog post by the slug, and increment the view count by one
-    // post = await BlogPost.findOneAndUpdate(
-    //   { slug: req.params.slug },
-    //   { $inc: { viewCount: 1 } }
-    // );
-
-    post = await findPostAndUpdateViewCount({ slug: req.params.slug });
+    post = await BlogPost.findOneAndUpdate(
+      { slug: req.params.slug },
+      { $inc: { viewCount: 1 } }
+    );
 
     if (!post) {
       return next(
@@ -181,11 +157,9 @@ exports.getSingleBlogPost = asyncHandler(async (req, res, next) => {
 
     // Save the view count changes
     await post.save();
-    // post = await BlogPost.find({ slug: req.params.slug })
-    //   .populate("user")
-    //   .lean();
-
-    post = await findPost({ slug: req.params.slug }, "user").lean();
+    post = await BlogPost.find({ slug: req.params.slug })
+      .populate("user")
+      .lean();
 
     if (!post) {
       return next(
@@ -199,12 +173,11 @@ exports.getSingleBlogPost = asyncHandler(async (req, res, next) => {
     });
   }
 
+  // If the user is me, dont increment view count
   if (user.email === process.env.MY_EMAIL) {
-    // post = await BlogPost.find({ slug: req.params.slug })
-    //   .populate("user")
-    //   .lean();
-
-    post = await findPost({ slug: req.params.slug }, "user").lean();
+    post = await BlogPost.find({ slug: req.params.slug })
+      .populate("user")
+      .lean();
 
     if (!post) {
       return next(
@@ -217,48 +190,17 @@ exports.getSingleBlogPost = asyncHandler(async (req, res, next) => {
       post: post[0],
     });
   }
-
-  // If there is a logged in user and it isn't me
-  // Find the blog post by the slug, and increment the view count by one
-  // post = await BlogPost.findOneAndUpdate(
-  //   { slug: req.params.slug },
-  //   { $inc: { viewCount: 1 } }
-  // );
-
-  post = await findPostAndUpdateViewCount({ slug: req.params.slug });
-
-  if (!post) {
-    return next(
-      new ErrorResponse(`No Post Found With Title ${req.params.slug}`)
-    );
-  }
-
-  // Save the view count changes
-  await post.save();
-  // post = await BlogPost.find({ slug: req.params.slug }).populate("user").lean();
-
-  post = await findPost({ slug: req.params.slug }, "user").lean();
-
-  if (!post) {
-    return next(
-      new ErrorResponse(`No Post Found With Title ${req.params.slug}`)
-    );
-  }
-  console.log(post[0]);
   res.render("posts/blogPost", {
     layout: "singleBlogPost.hbs",
     post: post[0],
   });
-
-  // If the user isn't me or there isn't a logged in user
 });
 
 // @desc    Delete single blog post
 // @method  DELETE /blog/delete/:blogPostId
 exports.deleteSingleBlogPost = asyncHandler(async (req, res, next) => {
-  // const post = await BlogPost.findById(req.params.blogPostId);
+  const post = await BlogPost.findById(req.params.blogPostId);
 
-  const post = await findPost({ _id: req.params.blogPostId });
   if (!post) {
     return next(
       new ErrorResponse(`No Post Found With ID ${req.params.blogPostId}`)
