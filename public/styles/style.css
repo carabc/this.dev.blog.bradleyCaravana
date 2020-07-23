@@ -855,7 +855,7 @@ section.contact button:hover {
   /* BLOG CARD */
   .blog-card {
     grid-template-columns: repeat(2, 1fr);
-    max-width: 70%;
+    max-width: 80%;
   }
 
   .blog-card__title h3 {
