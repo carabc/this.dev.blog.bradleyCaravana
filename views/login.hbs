@@ -1,13 +1,13 @@
 <div class="login-container">
-    <div class="card">
-        <div class="card__title">
+    <div class="login-card">
+        <div class="login-card__title">
             <h1><span class="highlight">this</span>.dev.blog</h1>
             <p>Web Development || Bradley Caravana</p>
         </div>
         <div class="divider"></div>
-        <div class="card__body">
+        <div class="login-card__body">
             <h2>Sign In</h2>
-            <form action="/auth/login" method="POST">
+            <form class="login-card__form" action="/auth/login" method="POST">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" name="email" class="form-control" required />
@@ -16,12 +16,11 @@
                     <label for="password">Password</label>
                     <input type="password" name="password" class="form-control" required />
                 </div>
-                <button type="submit" class="btn btn__light">Sign in</button>
+                <button type="submit" class="btn__light">Sign in</button>
             </form>
         </div>
         <div class="divider"></div>
-        <div class="divider"></div>
-        <div class="card__signup">
+        <div class="login-card__signup">
             <p>Don't have an account? <a href="/auth/register">Register</a></p>
         </div>
     </div>
