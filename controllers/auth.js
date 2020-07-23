@@ -6,7 +6,7 @@ const User = require("../models/User");
 // @route  GET /auth/register
 // @access Public
 exports.registerPage = (req, res, next) => {
-  res.render("register");
+  res.render("auth/register");
 };
 
 // @desc   Register User
@@ -31,7 +31,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @route  GET /auth/login
 // @access Public
 exports.loginPage = (req, res, next) => {
-  res.render("login");
+  res.render("auth/login");
 };
 
 // @desc   Login User
@@ -63,18 +63,6 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   //   Create JSON Web Token
   sendTokenResponse(user, 200, res);
-});
-
-// @desc   Get Current Logged In User
-// @route  POST /auth/me
-// @access Private
-exports.getMe = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
-
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
 });
 
 // Get token from model, create cookie and send response
