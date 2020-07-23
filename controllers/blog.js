@@ -32,42 +32,75 @@ exports.likeABlogPost = asyncHandler(async (req, res, next) => {
     return res.redirect("/auth/login");
   }
 
-  // Find the post by the slug and increment the likes field by 1
-  const post = await BlogPost.findOneAndUpdate(
-    { slug: req.params.slug },
-    { $inc: { likes: 1 } }
-  );
-
-  if (!post) {
-    return next(
-      new ErrorResponse(`No post found with title ${req.params.slug}`, 404)
-    );
-  }
-
-  //Find a user by the logged in users id on the res.locals object and update the array of liked posts to include the post being liked
   try {
-    const user = await User.findByIdAndUpdate(res.locals.user._id, {
-      $push: { likedPosts: post._id },
-    });
-
+    // Find user in database from user object on res.locals, if there is one
+    let user = await User.findById(res.locals.user._id)
+      .populate("likedPosts")
+      .lean();
+    // If theres no user, redirect them to the login page
     if (!user) {
+      return res.redirect("/auth/login");
+    }
+
+    // Delete duplicate liked posts from the likedPosts array (Thanks Ben lol)
+    user.likedPosts.filter(
+      (item, itemIndex) => user.likedPosts.indexOf(item) === itemIndex
+    );
+
+    // If the user already liked the post, redirect them to the recent posts page without incrementing the like count
+    if (user.likedPosts.find((post) => post.slug === req.params.slug)) {
+      console.log("User already liked the post...redirecting...");
+      return res.redirect("/blog");
+    }
+
+    // If the post can't be found in the likedPosts array of the user, increment the like count by 1
+    const post = await BlogPost.findOneAndUpdate(
+      { slug: req.params.slug },
+      { $inc: { likes: 1 } }
+    );
+
+    if (!post) {
       return next(
-        new ErrorResponse(`No user found with id ${req.user._id}`, 404)
+        new ErrorResponse(`No post found with title ${req.params.slug}`, 404)
       );
     }
 
-    console.log(user);
-
-    // Save post document changes
-    await post.save();
+    // Push the post into the likedPosts array of the user
+    user = await User.findByIdAndUpdate(res.locals.user._id, {
+      $push: { likedPosts: post._id },
+    });
   } catch (err) {
     console.log(err);
     console.log("Something went wrong...");
     return res.redirect("/");
   }
 
-  // Redirect the client to the blog page
   res.redirect("/blog");
+
+  //Find a user by the logged in users id on the res.locals object and update the array of liked posts to include the post being liked
+  // try {
+  //   const user = await User.findByIdAndUpdate(res.locals.user._id, {
+  //     $push: { likedPosts: post._id },
+  //   });
+
+  //   if (!user) {
+  //     return next(
+  //       new ErrorResponse(`No user found with id ${req.user._id}`, 404)
+  //     );
+  //   }
+
+  //   console.log(user);
+
+  //   // Save post document changes
+  //   await post.save();
+  // } catch (err) {
+  //   console.log(err);
+  //   console.log("Something went wrong...");
+  //   return res.redirect("/");
+  // }
+
+  // Redirect the client to the blog page
+  // res.redirect("/blog");
 });
 
 // @desc    View Create Blog Post Form
