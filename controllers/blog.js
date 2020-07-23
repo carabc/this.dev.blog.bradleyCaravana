@@ -42,11 +42,6 @@ exports.likeABlogPost = asyncHandler(async (req, res, next) => {
       return res.redirect("/auth/login");
     }
 
-    // Delete duplicate liked posts from the likedPosts array (Thanks Ben lol)
-    user.likedPosts.filter(
-      (item, itemIndex) => user.likedPosts.indexOf(item) === itemIndex
-    );
-
     // If the user already liked the post, redirect them to the recent posts page without incrementing the like count
     if (user.likedPosts.find((post) => post.slug === req.params.slug)) {
       console.log("User already liked the post...redirecting...");
