@@ -71,31 +71,6 @@ exports.likeABlogPost = asyncHandler(async (req, res, next) => {
   }
 
   res.redirect("/blog");
-
-  //Find a user by the logged in users id on the res.locals object and update the array of liked posts to include the post being liked
-  // try {
-  //   const user = await User.findByIdAndUpdate(res.locals.user._id, {
-  //     $push: { likedPosts: post._id },
-  //   });
-
-  //   if (!user) {
-  //     return next(
-  //       new ErrorResponse(`No user found with id ${req.user._id}`, 404)
-  //     );
-  //   }
-
-  //   console.log(user);
-
-  //   // Save post document changes
-  //   await post.save();
-  // } catch (err) {
-  //   console.log(err);
-  //   console.log("Something went wrong...");
-  //   return res.redirect("/");
-  // }
-
-  // Redirect the client to the blog page
-  // res.redirect("/blog");
 });
 
 // @desc    View Create Blog Post Form
@@ -165,8 +140,29 @@ exports.editBlogPost = asyncHandler(async (req, res, next) => {
 // @desc    Get single blog post
 // @method  GET /blog/:slug
 exports.getSingleBlogPost = asyncHandler(async (req, res, next) => {
+  // See if the user is me before incrementing the view count
+  let user = res.locals.user;
+  let post;
+
+  if (user.email === process.env.MY_EMAIL) {
+    post = await BlogPost.find({ slug: req.params.slug })
+      .populate("user")
+      .lean();
+    if (!post) {
+      return next(
+        new ErrorResponse(`No Post Found With Title ${req.params.slug}`)
+      );
+    }
+    console.log(post[0]);
+    return res.render("posts/blogPost", {
+      layout: "singleBlogPost.hbs",
+      post: post[0],
+    });
+  }
+
+  // If the user isn't me or there isn't a logged in user
   // Find the blog post by the slug, and increment the view count by one
-  let post = await BlogPost.findOneAndUpdate(
+  post = await BlogPost.findOneAndUpdate(
     { slug: req.params.slug },
     { $inc: { viewCount: 1 } }
   );
