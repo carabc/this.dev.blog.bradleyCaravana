@@ -28,7 +28,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
     req.user = await User.findById(decoded.id);
 
-    if (req.user.email !== process.env.MY_EMAIL) {
+    if (req.user.role !== "admin") {
       return next(
         new ErrorResponse(
           "You do not have authorization to access this page.",
