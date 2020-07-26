@@ -25,7 +25,6 @@ app.use(express.static(path.join(__dirname, "/public")));
 // Handlebars helpers
 const {
   formatDate,
-  truncate,
   makeNewPostButton,
   stripTagsAndTruncate,
   makeEditPostButton,
@@ -40,7 +39,6 @@ app.engine(
     partialsDir: [path.join(__dirname, "views/partials")],
     helpers: {
       formatDate,
-      truncate,
       makeNewPostButton,
       stripTagsAndTruncate,
       makeEditPostButton,
