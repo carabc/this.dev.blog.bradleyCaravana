@@ -1,6 +1,4 @@
 :root {
-  --purple: rgb(149, 0, 168);
-  --purpleClear: rgba(148, 0, 168, 0.568);
   --dark: #333;
   --google: rgb(255, 64, 64);
   --bosBlue: #193549;
@@ -14,19 +12,43 @@ html {
 }
 
 body {
+  /* Dark Mode Variables */
+  /* Set up initial color variables for 'light mode' */
+  --cantBelieveThisHexColorExists: #bada55;
+  --background-color: #fff;
+  --text-color: #333;
+  --transition-delay: 1s;
+  --accent-color: rgb(149, 0, 168);
+  --accentClear: rgba(148, 0, 168, 0.568);
+
   line-height: 1.6;
   margin: 0;
   padding: 0;
   height: 100%;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: var(--transition-delay);
+}
+
+body.dark {
+  /* When the body has a class of 'dark,' the color values are overwritten */
+  --background-color: #333;
+  --text-color: #fff;
+  --accent-color: #008b8b;
+  --accentClear: #008b8b5e;
 }
 
 /* GLOBAL STYLES */
+
+.blog-post a {
+  color: var(--text-color);
+}
 
 .edit-btn,
 button.edit-btn {
   text-decoration: none;
   background: none;
-  color: #333;
+  color: var(--text-color);
   padding: 0.4em;
   margin-top: 10px;
   transition: all 0.2s ease-in-out;
@@ -34,22 +56,22 @@ button.edit-btn {
   font-size: 1.25em;
   cursor: pointer;
   text-align: center;
-  border: 1px solid var(--purple);
+  border: 1px solid var(--accent-color);
 }
 
 .edit-btn:hover,
 button.edit-btn:hover {
-  background: var(--purple);
-  color: #fff;
+  background: var(--accent-color);
+  color: var(--text-color);
 }
 
 button.edit-btn {
   background: none;
-  border: 1px solid var(--purple);
+  border: 1px solid var(--accent-color);
 }
 
 button.edit-btn:hover {
-  background: var(--purple);
+  background: var(--accent-color);
 }
 
 pre {
@@ -57,7 +79,7 @@ pre {
   color: #fff;
   height: 100%;
   width: auto;
-  border: 3px solid var(--purple);
+  border: 3px solid var(--accent-color);
   display: inline-block;
 }
 
@@ -74,22 +96,19 @@ code {
 
 .btn-dark,
 button.btn-dark {
-  /* background: #333; */
-  background: none;
+  background: var(--accent-color);
   text-decoration: none;
-  color: #fff;
+  color: var(--text-color);
   padding: 0.5em;
   font-size: 1.25em;
   font-style: italic;
   transition: all 0.2s;
-  border: 1px solid var(--dark);
 }
 
 .btn-dark:hover,
 button.btn-dark:hover {
-  background: rgba(255, 255, 255, 0.301);
   color: #fff;
-  background: var(--dark);
+  background: var(--accentClear);
 }
 
 .btn-red {
@@ -122,7 +141,7 @@ button.btn-red {
 }
 
 .highlight {
-  color: var(--purple);
+  color: var(--accent-color);
 }
 
 .floating-btn {
@@ -132,7 +151,7 @@ button.btn-red {
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  background: var(--purple);
+  background: var(--accent-color);
   border-radius: 50%;
   color: #fff;
   font-size: 2em;
@@ -143,14 +162,14 @@ button.btn-red {
 }
 
 .floating-btn:hover {
-  background: var(--purpleClear);
+  background: var(--accentClear);
 }
 
 .header-btn {
   position: fixed;
   top: 10%;
   left: 5%;
-  background: var(--purple);
+  background: var(--accent-color);
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -190,13 +209,14 @@ button.btn-red {
   margin: 0;
   padding: 0;
   position: relative;
-  background: #fff;
+  background: var(--background-color);
   max-width: 50%;
+  color: var(--text-color);
   height: 100%;
   display: grid;
   grid-template-rows: auto auto auto 1fr;
   padding: 1em;
-  border-right: 2px solid var(--purple);
+  border-right: 2px solid var(--accent-color);
   transition: all 0.3s ease-in-out;
   transform: translateX(-100%);
   z-index: 1000;
@@ -207,7 +227,7 @@ button.btn-red {
 }
 
 .close-btn {
-  color: var(--purple);
+  color: var(--accent-color);
   font-size: 1.5em;
   justify-self: end;
   position: absolute;
@@ -221,7 +241,7 @@ button.btn-red {
 
 .nav__branding a {
   text-decoration: none;
-  color: #333;
+  color: var(--text-color);
 }
 
 .nav__branding h1 {
@@ -232,7 +252,7 @@ button.btn-red {
 .divider {
   width: 100%;
   height: 1px;
-  background: #bbbbbb;
+  background: var(--accent-color);
 }
 
 .nav__list {
@@ -249,31 +269,30 @@ button.btn-red {
 
 .nav__list-item .btn-dark {
   font-size: 0.75em;
-  background: #333;
+  background: var(--accent-color);
   color: #fff;
 }
 
 .nav__list-item .btn-dark:hover {
-  background: #fff;
-  color: #333;
+  background: var(--accentClear);
 }
 
 .nav__list-item .greeting {
   margin: 0;
   display: inline;
-  color: var(--purple);
+  color: var(--accent-color);
   font-weight: bold;
 }
 
 .nav__list-link {
   text-decoration: none;
-  color: #333;
+  color: var(--text-color);
   position: relative;
   transition: all 0.2s ease-in-out;
 }
 
 .nav__list-link:hover {
-  color: var(--purple);
+  color: var(--accent-color);
 }
 
 .nav__list-link:before {
@@ -283,7 +302,7 @@ button.btn-red {
   left: 0;
   width: 0%;
   height: 2px;
-  background: var(--purple);
+  background: var(--accent-color);
   transition: all 0.2s ease-in-out;
 }
 
@@ -334,12 +353,11 @@ button.btn-red {
   margin: 0 auto;
   text-align: justify;
   gap: 1em;
-  /* grid-template-columns: 4fr 12fr 4fr; */
 }
 
 .about__header {
   font-size: 1.25em;
-  color: var(--purple);
+  color: var(--accent-color);
 }
 
 .about img {
@@ -348,6 +366,10 @@ button.btn-red {
 
 .about .tag {
   text-align: center;
+}
+
+.about a {
+  color: var(--accent-color);
 }
 
 /* RECENT POSTS */
@@ -378,7 +400,7 @@ button.btn-red {
   position: absolute;
   bottom: 0;
   left: 0;
-  background: var(--purple);
+  background: var(--accent-color);
   transition: all 0.25s ease-in-out;
 }
 
@@ -401,7 +423,7 @@ button.btn-red {
   position: absolute;
   top: -15px;
   right: 5px;
-  background: var(--purple);
+  background: var(--accent-color);
   width: 2em;
   height: 2em;
   font-size: 1.5em;
@@ -415,7 +437,7 @@ button.btn-red {
 }
 
 .floating-edit-btn:hover {
-  background: var(--purpleClear);
+  background: var(--accentClear);
 }
 
 .blog-card__thumbnail img {
@@ -455,7 +477,7 @@ button.btn-red {
 
 .blog-card__title a {
   text-decoration: none;
-  color: #333;
+  color: var(--text-color);
 }
 
 .blog-card__title h3 {
@@ -465,7 +487,7 @@ button.btn-red {
 }
 
 .blog-card__title h3 a:hover {
-  color: var(--purple);
+  color: var(--accent-color);
 }
 
 .blog-card__title h5 {
@@ -521,18 +543,18 @@ button.btn-red {
 }
 
 .portfolio .blog-card {
-  background: #333;
-  color: #fff;
+  background: var(--background-color);
+  color: var(--text-color);
 }
 
 .portfolio .btn-dark {
   font-size: 0.75em;
   font-style: normal;
+  color: #fff;
 }
 
 .portfolio .btn-dark:hover {
-  background: #fff;
-  color: #333;
+  background: var(--accentClear);
 }
 /* END PORTFOLIO */
 
@@ -553,6 +575,8 @@ header.blog-header .edit-btn {
   display: inline-block;
   font-size: 1em;
   padding: 0.5em;
+  background: var(--accent-color);
+  color: #fff;
 }
 
 header.blog-header .btn-red {
@@ -569,13 +593,13 @@ header.blog-header .btn-red {
 }
 
 .blog-post__heading {
-  color: var(--purple);
+  color: var(--accent-color);
   font-size: 2em;
   text-align: left;
 }
 
 .blog-post__sub-header {
-  color: var(--purple);
+  color: var(--accent-color);
 }
 
 .blog-post img {
@@ -603,11 +627,7 @@ header.blog-header .btn-red {
   display: block;
   width: 100%;
   margin-top: 10px;
-  color: #333;
-}
-
-.newPostContainer form button:hover {
-  color: #fff;
+  color: var(--text-color);
 }
 
 .form-group {
@@ -649,10 +669,6 @@ section.contact label {
 section.contact button {
   display: block;
   width: 100%;
-  color: #333;
-}
-
-section.contact button:hover {
   color: #fff;
 }
 
@@ -720,8 +736,8 @@ section.contact button:hover {
 
 .login-card__form .btn__light {
   border: 1px solid #333;
-  background: #fff;
-  color: #333;
+  background: var(--accent-color);
+  color: var(--text-color);
   display: block;
   width: 100%;
   margin: 10px 0 0px 0;
@@ -735,9 +751,7 @@ section.contact button:hover {
 }
 
 .login-card__form .btn__light:hover {
-  color: #fff;
-  background: rgba(51, 51, 51, 0.671);
-  border: 1px solid #fff;
+  background: var(--accentClear);
 }
 
 .login-card__signup {
@@ -746,6 +760,10 @@ section.contact button:hover {
 
 .login-card__signup p {
   margin-bottom: 0;
+}
+
+.login-card__signup a {
+  color: var(--accent-color);
 }
 /* END LOGIN PAGE */
 
@@ -891,7 +909,7 @@ section.contact button:hover {
     max-width: 40%;
     margin: 2.5em auto;
     padding: 0 5em;
-    box-shadow: 0px 2px 2px 0px rgba(51, 51, 51, 0.39);
+    border: 1px solid var(--text-color);
   }
 
   .blog-post > * {

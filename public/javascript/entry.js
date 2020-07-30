@@ -16,3 +16,11 @@ navContainer.addEventListener("click", (e) => {
     navContainer.classList.remove("open");
   }
 });
+
+// Wire up the button to toggle dark mode when clicked with some JavaScript
+const darkButton = document.querySelector(".dark-toggle");
+
+darkButton.addEventListener("click", (e) => {
+  // When the button is clicked, toggle the class of 'dark' on the body's classList
+  document.body.classList.toggle("dark");
+});
