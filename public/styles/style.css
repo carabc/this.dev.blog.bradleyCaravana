@@ -707,10 +707,10 @@ section.contact button {
   margin: 5px 0px 5px 0px;
 }
 
-.login-card__form .btn__light {
+.login-card__form .btn {
   border: 1px solid #333;
   background: var(--accent-color);
-  color: var(--text-color);
+  color: #fff;
   display: block;
   width: 100%;
   margin: 10px 0 0px 0;
