@@ -12,11 +12,22 @@ exports.getAllBlogPosts = asyncHandler(async (req, res, next) => {
     .populate("user")
     .sort({ createdAt: "desc" })
     .lean();
+    if(req.query.page) {
+      results = await paginatedResults(posts, req, res);
+      console.log(results);
+      res.render("blog", {
+        layout: "blog.hbs",
+        posts: results.queriedPosts,
+      });
+    }
+  
+    
 
   res.render("blog", {
     layout: "blog.hbs",
     posts,
   });
+
 });
 
 // @desc    Like a blog post
@@ -243,3 +254,31 @@ exports.createSingleBlogPost = asyncHandler(async (req, res, next) => {
 
   res.redirect("/blog");
 });
+
+
+const paginatedResults = async (model, req, res) => {
+    
+        
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const results = {};
+        results.queriedPosts = model.slice(startIndex, endIndex);
+        if(endIndex < model.length) {
+
+          results.next = {
+            page: page + 1,
+            limit,
+          };
+        }
+
+        if(startIndex > 0) {
+            results.previous = {
+            page: page - 1,
+            limit,
+            }
+        }
+        return results;
+    
+}
