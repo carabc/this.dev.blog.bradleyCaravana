@@ -53,7 +53,7 @@ app.use(requestLogger);
 // Initialize built in body parser for express
 app.use(express.urlencoded({ extended: false }));
 
-// Incase I want to send JSON in the body (used for auth testing using JWT)
+// Incase I want to send JSON in the body (used for auth testing using JWT, not used often, however.)
 app.use(express.json());
 
 // Cookie parser
